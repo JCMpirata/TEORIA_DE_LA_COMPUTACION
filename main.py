@@ -1,10 +1,11 @@
+# main.py
 import glob
 import os
 import argparse
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-from lexer import extract_links, extract_images
+from lexer import extract_links, extract_images, render_automaton_image
 from parser import is_balanced
 
 """
@@ -13,6 +14,7 @@ Procesa localmente todos los archivos 'prueba*.html',
 analiza una URL usando DOM,
 y además procesa tres URLs fijas si no se pasa ningún argumento.
 Genera archivos TXT con URLs, estadísticas de etiquetas y muestra balanceo.
+Además permite dibujar el grafo del autómata del lexer.
 """
 
 def save_list(items, filename):
@@ -91,14 +93,21 @@ def process_url(url):
     
 def main():
     parser = argparse.ArgumentParser(
-        description='Procesar HTML local, web o URLs fijas: extraer enlaces, imágenes, balanceo y estadísticas'
+        description='Procesar HTML local, web o URLs fijas: extraer enlaces, imágenes, balanceo y estadísticas. También dibujar el grafo del autómata.'
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-f', '--file',
                        help='Archivo HTML o directorio con .html para procesar localmente')
     group.add_argument('-u', '--url',
                        help='URL de la página web a procesar con BeautifulSoup')
+    group.add_argument('-g', '--graph', action='store_true',
+                       help='Dibuja el grafo del autómata del lexer')
     args = parser.parse_args()
+
+    
+    print("Grafo del autómata")
+    render_automaton_image()
+    
 
     if args.url:
         # Procesar la URL indicada en -u

@@ -101,8 +101,8 @@ https://pyfound.blogspot.com/2025/04/congrats-loren.html
 /events/python-events/2012/
 /events/python-user-group/1997/
 /success-stories/
-/success-stories/saving-the-world-with-open-data-and-python/
-/success-stories/saving-the-world-with-open-data-and-python/
+/success-stories/building-robust-codebases-with-pythons-type-annotations/
+/success-stories/building-robust-codebases-with-pythons-type-annotations/
 /about/apps
 http://www.djangoproject.com/
 http://www.pylonsproject.org/
