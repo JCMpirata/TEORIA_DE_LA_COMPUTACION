@@ -75,3 +75,16 @@ def process_url(url):
     base = parsed.netloc.replace(':', '_')
     save_list(links, f"{base}_links.txt")
     save_list(images, f"{base}_images.txt")
+    
+    # Estadísticas de etiquetas
+    tags_to_count = ['a', 'img', 'br', 'div', 'li', 'ul', 'p', 'span', 'table', 'td', 'tr']
+    stats = {tag: len(soup.find_all(tag)) for tag in tags_to_count}
+
+    print(f"Procesado URL '{url}':")
+    print(f"- {len(links)} enlaces -> {base}_links.txt")
+    print(f"- {len(images)} imágenes -> {base}_images.txt")
+    print(f"- Balanceado: {'Sí' if balanced else 'No'}")
+    print("- Estadísticas de etiquetas:")
+    for tag, count in stats.items():
+        print(f"  {tag}: {count}")
+    print()
