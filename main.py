@@ -30,3 +30,48 @@ def process_file(filepath):
     links = [item['URL'] for item in extract_links(html)]
     images = [item['SRC'] for item in extract_images(html)]
     balanced = is_balanced(html)
+    
+    # Estadísticas de etiquetas con BeautifulSoup
+    soup = BeautifulSoup(html, 'html.parser')
+    tags_to_count = ['a', 'img', 'br', 'div', 'li', 'ul', 'p', 'span', 'table', 'td', 'tr']
+    stats = {tag: len(soup.find_all(tag)) for tag in tags_to_count}
+
+    base = os.path.splitext(os.path.basename(filepath))[0]
+    save_list(links, f"{base}_links.txt")
+    save_list(images, f"{base}_images.txt")
+
+    print(f"Procesado local '{base}':")
+    print(f"- {len(links)} enlaces -> {base}_links.txt")
+    print(f"- {len(images)} imágenes -> {base}_images.txt")
+    print(f"- Balanceado: {'Sí' if balanced else 'No'}")
+    print("- Estadísticas de etiquetas:")
+    for tag, count in stats.items():
+        print(f"  {tag}: {count}")
+    print()
+
+def process_url(url):
+    """Procesa una URL: usa BeautifulSoup para extraer enlaces, imágenes, estadísticas de etiquetas y comprueba balanceo."""
+    try:
+        resp = requests.get(url)
+        resp.raise_for_status()
+        html = resp.text
+    except Exception as e:
+        print(f"Error fetching URL {url}: {e}")
+        return
+
+    # Comprueba balanceo usando el HTML crudo
+    balanced = is_balanced(html)
+
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # Extraer enlaces e imágenes desde DOM
+    a_tags = soup.find_all('a', href=True)
+    img_tags = soup.find_all('img', src=True)
+    links = [tag['href'] for tag in a_tags]
+    images = [tag['src'] for tag in img_tags]
+
+    # Guardar URLs
+    parsed = urlparse(url)
+    base = parsed.netloc.replace(':', '_')
+    save_list(links, f"{base}_links.txt")
+    save_list(images, f"{base}_images.txt")
