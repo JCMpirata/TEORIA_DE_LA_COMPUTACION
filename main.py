@@ -88,3 +88,53 @@ def process_url(url):
     for tag, count in stats.items():
         print(f"  {tag}: {count}")
     print()
+    
+def main():
+    parser = argparse.ArgumentParser(
+        description='Procesar HTML local, web o URLs fijas: extraer enlaces, imágenes, balanceo y estadísticas'
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-f', '--file',
+                       help='Archivo HTML o directorio con .html para procesar localmente')
+    group.add_argument('-u', '--url',
+                       help='URL de la página web a procesar con BeautifulSoup')
+    args = parser.parse_args()
+
+    if args.url:
+        # Procesar la URL indicada en -u
+        process_url(args.url)
+
+    elif args.file:
+        # Procesar archivos o directorio indicado en -f
+        if os.path.isdir(args.file):
+            targets = sorted(glob.glob(os.path.join(args.file, '*.html')))
+        else:
+            targets = [args.file]
+        if not targets:
+            print("No se encontraron archivos HTML para procesar localmente.")
+            return
+        for filepath in targets:
+            process_file(filepath)
+
+    else:
+        # Sin argumentos: procesamos archivos locales y además las 3 URLs fijas
+
+        # 1) HTML locales
+        targets = sorted(glob.glob('prueba*.html'))
+        if targets:
+            for filepath in targets:
+                process_file(filepath)
+        else:
+            print("No se encontraron archivos 'prueba*.html' en el directorio actual.")
+
+        # 2) URLs fijas
+        fixed_urls = [
+            'https://www.example.org',
+            'https://www.python.org',
+            'https://www.wikipedia.org'
+        ]
+        for url in fixed_urls:
+            process_url(url)
+
+if __name__ == '__main__':
+    main()
