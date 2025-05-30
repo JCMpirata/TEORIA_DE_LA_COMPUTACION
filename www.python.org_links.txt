@@ -101,8 +101,8 @@ https://pyfound.blogspot.com/2025/04/congrats-loren.html
 /events/python-events/2012/
 /events/python-user-group/1997/
 /success-stories/
-/success-stories/building-robust-codebases-with-pythons-type-annotations/
-/success-stories/building-robust-codebases-with-pythons-type-annotations/
+/success-stories/using-python-with-gretelai-to-generate-synthetic-location-data/
+/success-stories/using-python-with-gretelai-to-generate-synthetic-location-data/
 /about/apps
 http://www.djangoproject.com/
 http://www.pylonsproject.org/
